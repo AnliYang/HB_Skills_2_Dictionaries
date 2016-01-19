@@ -94,7 +94,39 @@ def adv_alpha_sort_by_word_length(words):
 
     """
 
-    return []
+    # turn input list into a dictionary with key=word and value=word-length
+    word_dict = {word: len(word) for word in words}
+    # print "word_dict =", word_dict
+
+    # iterating over the dictionary, 
+    #     create a list of tuples (word-length, list of single word)
+    initial_list = []
+    # for entry in word_dict:
+    #         initial_list.append((word_dict[entry], [entry, ]))
+    for key, value in word_dict.iteritems():
+        initial_list.append((value, [key, ]))
+
+    sorted_list = sorted(initial_list)
+    # print "initial_list =", initial_list
+    # print "sorted_list =", sorted_list
+
+    # collapse tuples with the same word-length:
+    #     each tuple: word-length, sorted list of all words with that length
+    final_list = []
+    current_index = 0
+    for item in sorted_list:
+        if sorted_list[0] == item: 
+            final_list.append(item)
+            # print final_list  
+        elif sorted_list[current_index][0] == sorted_list[current_index-1][0]:
+            final_list[current_index-1] = (final_list[current_index-1][0], (final_list[current_index-1][1] + (sorted_list[current_index][1])))
+            # print final_list
+        else:
+            final_list.append(item)       
+            # print final_list
+        current_index += 1
+
+    return final_list
 
 
 ##############################################################################
